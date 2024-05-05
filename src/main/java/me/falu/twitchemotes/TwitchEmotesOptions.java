@@ -11,4 +11,5 @@ public class TwitchEmotesOptions {
     public static final ConfigValue<Boolean> SHOW_USER_COLORS = new ConfigValue<>("show_user_colors", true);
     public static final ConfigValue<Boolean> SHOW_BADGES = new ConfigValue<>("show_badges", true);
     public static final ConfigValue<Boolean> SHOW_PP_HOP_OVERLAY = new ConfigValue<>("show_pp_hop_overlay", true);
+    public static final ConfigValue<Boolean> CHAT_BACK = new ConfigValue<>("chat_back", true);
 }
