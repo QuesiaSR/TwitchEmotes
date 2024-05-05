@@ -1,6 +1,7 @@
 package me.falu.twitchemotes.mixin.chat;
 
 import me.falu.twitchemotes.TwitchEmotes;
+import me.falu.twitchemotes.TwitchEmotesOptions;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,6 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ClientPlayNetworkHandlerMixin {
     @Inject(method = "sendChatMessage", at = @At("TAIL"))
     private void sendTwitchMessage(String content, CallbackInfo ci) {
-        TwitchEmotes.sendChatMessage(content);
+        if (TwitchEmotes.CHAT_CONNECTED && TwitchEmotesOptions.CHAT_BACK.getValue()) {
+            TwitchEmotes.sendChatMessage(content);
+        }
     }
 }
