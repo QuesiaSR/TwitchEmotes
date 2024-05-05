@@ -2,6 +2,7 @@ package me.falu.twitchemotes.mixin.chat;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.falu.twitchemotes.TwitchEmotes;
+import me.falu.twitchemotes.TwitchEmotesOptions;
 import me.falu.twitchemotes.gui.screen.MenuSelectionScreen;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.Screen;
@@ -26,7 +27,7 @@ public abstract class ChatScreenMixin extends Screen {
 
     @Override
     public void sendMessage(String message) {
-        if (!message.startsWith("/")) {
+        if (!message.startsWith("/") && TwitchEmotes.CHAT_CONNECTED && TwitchEmotesOptions.CHAT_BACK.getValue()) {
             TwitchEmotes.sendChatMessage(message);
         }
         super.sendMessage(message);
