@@ -49,4 +49,10 @@ public class EmoteConstants {
             "https://cdn.7tv.app/emote/637995e7d6c9ec937a9c140e/4x.webp",
             Emote.ImageType.WEBP
     );
+    public static final Emote SNIFFA = new Emote(
+            "SNIFFA",
+            "60be7f41ae67b5b98b425a70",
+            "https://cdn.7tv.app/emote/60be7f41ae67b5b98b425a70/4x.webp",
+            Emote.ImageType.WEBP
+    );
 }
