@@ -68,14 +68,13 @@ public class EmoteTextureHandler {
                 return null;
             }
             return this.textures.get(this.currentFrame).getImage();
-        } catch (IOException e) {
+        } catch (Exception e) {
             TwitchEmotes.LOGGER.error("Error while reading image for '" + this.emote.name + "'", e);
             TwitchEmotes.invalidateEmote(this.emote);
             this.failed = true;
             this.loading = false;
             return null;
         }
-        return null;
     }
 
     public void postRender() {
