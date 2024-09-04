@@ -15,7 +15,6 @@ import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -29,14 +28,15 @@ import java.util.*;
 public abstract class ChatHudMixin implements TwitchMessageListOwner {
     @Shadow @Final private List<ChatHudLine> messages;
     @Shadow @Final private List<ChatHudLine.Visible> visibleMessages;
-    @Shadow protected abstract void logChatMessage(Text message, @Nullable MessageIndicator indicator);
     @Shadow public abstract int getWidth();
     @Shadow public abstract double getChatScale();
-    @Shadow protected abstract boolean isChatFocused();
+    @Shadow public abstract boolean isChatFocused();
     @Shadow @Final private MinecraftClient client;
     @Shadow private int scrolledLines;
     @Shadow private boolean hasUnreadNewMessages;
     @Shadow public abstract void scroll(int scroll);
+    @Shadow protected abstract void logChatMessage(ChatHudLine message);
+
     @Unique private final Map<ChatHudLine, String> messageIds = new HashMap<>();
     @Unique private final Map<ChatHudLine.Visible, String> visibleMessageIds = new HashMap<>();
 
@@ -116,7 +116,8 @@ public abstract class ChatHudMixin implements TwitchMessageListOwner {
     public void twitchemotes$addMessage(Text prefix, String content, String id, Map<String, Emote> specific) {
         MutableText message = this.transformText(prefix, content, specific);
         MessageIndicator indicator = MessageIndicator.singlePlayer();
-        this.logChatMessage(Text.of(prefix + content), indicator);
+        int tick = this.client.inGameHud.getTicks();
+        this.logChatMessage(new ChatHudLine(tick, Text.of(prefix + content), null, indicator));
         int i = MathHelper.floor((double) this.getWidth() / this.getChatScale());
         if (indicator != null && indicator.icon() != null) {
             i -= indicator.icon().width + 4 + 2;
@@ -130,14 +131,14 @@ public abstract class ChatHudMixin implements TwitchMessageListOwner {
                 this.scroll(1);
             }
             boolean bl2 = j == list.size() - 1;
-            ChatHudLine.Visible visibleLine = new ChatHudLine.Visible(this.client.inGameHud.getTicks(), orderedText, indicator, bl2);
+            ChatHudLine.Visible visibleLine = new ChatHudLine.Visible(tick, orderedText, indicator, bl2);
             this.visibleMessages.add(0, visibleLine);
             this.visibleMessageIds.put(visibleLine, id);
         }
         while (this.visibleMessages.size() > 100) {
             this.visibleMessageIds.remove(this.visibleMessages.remove(this.visibleMessages.size() - 1));
         }
-        ChatHudLine line = new ChatHudLine(this.client.inGameHud.getTicks(), message, null, indicator);
+        ChatHudLine line = new ChatHudLine(tick, message, null, indicator);
         this.messages.add(0, line);
         this.messageIds.put(line, id);
         while (this.messages.size() > 100) {
@@ -145,7 +146,7 @@ public abstract class ChatHudMixin implements TwitchMessageListOwner {
         }
     }
 
-    @ModifyVariable(method = "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;ILnet/minecraft/client/gui/hud/MessageIndicator;Z)V", at = @At("HEAD"), ordinal = 0, argsOnly = true)
+    @ModifyVariable(method = "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;Lnet/minecraft/client/gui/hud/MessageIndicator;)V", at = @At("HEAD"), ordinal = 0, argsOnly = true)
     private Text transformMessageText(Text text) {
         return this.transformText(Text.literal(""), text, Maps.newHashMap());
     }

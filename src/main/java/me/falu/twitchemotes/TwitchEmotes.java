@@ -84,7 +84,6 @@ public class TwitchEmotes implements ClientModInitializer {
         }
     }
 
-    @SuppressWarnings("ExtractMethodRecommender")
     public static JsonElement getJsonAuthResponse(String endpoint) {
         String auth = TwitchEmotesOptions.TWITCH_AUTH.getValue();
         String clientId = TwitchEmotesOptions.TWITCH_CLIENT_ID.getValue();
