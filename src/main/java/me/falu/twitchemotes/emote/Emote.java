@@ -37,32 +37,27 @@ public class Emote {
             return;
         }
         RenderSystem.setShaderTexture(0, glId);
-        RenderSystem.setShader(GameRenderer::getPositionColorTexProgram);
+        RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
         RenderSystem.enableBlend();
-        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         float size = TwitchEmotes.EMOTE_SIZE;
         float width = this.textureHandler.getWidth();
-        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
+        BufferBuilder bufferBuilder = Tessellator.getInstance().begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
         bufferBuilder
                 .vertex(matrix, x, y, 100.0F)
                 .color(1.0F, 1.0F, 1.0F, alpha)
-                .texture(0.0F, 0.0F)
-                .next();
+                .texture(0.0F, 0.0F);
         bufferBuilder
                 .vertex(matrix, x, y + size, 100.0F)
                 .color(1.0F, 1.0F, 1.0F, alpha)
-                .texture(0.0F, 1.0F)
-                .next();
+                .texture(0.0F, 1.0F);
         bufferBuilder
                 .vertex(matrix, x + width, y + size, 100.0F)
                 .color(1.0F, 1.0F, 1.0F, alpha)
-                .texture(1.0F, 1.0F)
-                .next();
+                .texture(1.0F, 1.0F);
         bufferBuilder
                 .vertex(matrix, x + width, y, 100.0F)
                 .color(1.0F, 1.0F, 1.0F, alpha)
-                .texture(1.0F, 0.0F)
-                .next();
+                .texture(1.0F, 0.0F);
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
         RenderSystem.disableBlend();
     }

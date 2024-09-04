@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ChatScreen.class)
 public abstract class ChatScreenMixin extends Screen {
-    @Unique private static final Identifier BUTTON_ICON = new Identifier("textures/item/feather.png");
+    @Unique private static final Identifier BUTTON_ICON = Identifier.of("textures/item/feather.png");
 
     protected ChatScreenMixin(Text title) {
         super(title);

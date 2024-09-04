@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(TitleScreen.class)
 public abstract class TitleScreenMixin extends Screen {
-    @Unique private static final Identifier BUTTON_ICON = new Identifier("textures/item/feather.png");
+    @Unique private static final Identifier BUTTON_ICON = Identifier.of("textures/item/feather.png");
 
     protected TitleScreenMixin(Text title) {
         super(title);

@@ -17,9 +17,9 @@ import net.minecraft.util.math.MathHelper;
 
 public class LimitlessButtonWidget extends ButtonWidget {
     private static final ButtonTextures TEXTURES = new ButtonTextures(
-            new Identifier("textures/gui/sprites/widget/button.png"),
-            new Identifier("textures/gui/sprites/widget/button_disabled.png"),
-            new Identifier("textures/gui/sprites/widget/button_highlighted.png")
+            Identifier.of("textures/gui/sprites/widget/button.png"),
+            Identifier.of("textures/gui/sprites/widget/button_disabled.png"),
+            Identifier.of("textures/gui/sprites/widget/button_highlighted.png")
     );
     private static final int BG_COLOR = ColorHelper.Argb.getArgb(150, 0, 0, 0);
     private static final int BG_INACTIVE_COLOR = ColorHelper.Argb.getArgb(80, 0, 0, 0);
